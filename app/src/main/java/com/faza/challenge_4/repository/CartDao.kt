@@ -6,7 +6,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import com.faza.challenge_4.entity.Cart
+import com.faza.challenge_4.model.Cart
 
 @Dao
 interface CartDao {

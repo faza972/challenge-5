@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".Home.HomeFragment">
+    tools:context=".fragment.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_header"
@@ -39,7 +39,7 @@
             android:id="@+id/iv_user"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/test_account"
+            android:src="@drawable/baseline_account_circle_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -69,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/fruit_salad" />
+                tools:src="@tools:sample/avatars" />
 
             <View
                 android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                     android:id="@+id/iv_Diskon"
                     android:layout_width="70dp"
                     android:layout_height="70dp"
-                    android:src="@drawable/snack"
+                    tools:src="@tools:sample/avatars"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -141,7 +141,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/snack" />
+                tools:src="@tools:sample/avatars" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -164,7 +164,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/snack" />
+                tools:src="@tools:sample/avatars" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -187,7 +187,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/snack" />
+                tools:src="@tools:sample/avatars" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -210,7 +210,7 @@
             <ImageView
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/minum" />
+                tools:src="@tools:sample/avatars" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -240,7 +240,7 @@
             android:id="@+id/iv_gantiMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/bullet_list"
+            android:src="@drawable/button_list"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>

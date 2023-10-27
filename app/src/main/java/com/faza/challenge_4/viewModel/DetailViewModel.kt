@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.faza.challenge_4.entity.Cart
-import com.faza.challenge_4.menu.Menu
+import com.faza.challenge_4.model.Cart
+import com.faza.challenge_4.model.Menu
 import com.faza.challenge_4.repository.CartRepo
 
 class DetailViewModel (context: Application) : AndroidViewModel(context){

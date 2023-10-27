@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.faza.challenge_4.entity.Cart
+import com.faza.challenge_4.model.Cart
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 

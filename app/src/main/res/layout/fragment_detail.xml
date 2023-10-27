@@ -6,13 +6,13 @@
     android:id="@+id/detailFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="5dp"
-    tools:context=".detail.DetailFragment">
+    tools:context=".fragment.DetailFragment">
 
     <ImageView
         android:id="@+id/ivDetailImage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@drawable/fruit_salad"
+        tools:src="@tools:sample/avatars"
         app:layout_constraintDimensionRatio="19:9"
         app:layout_constraintTop_toTopOf="parent"/>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -110,7 +110,7 @@
                 android:id="@+id/krgpesanan"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/frame_39"
+                android:src="@drawable/ic_minus"
                 android:layout_marginLeft="3dp"
                 app:layout_constraintBottom_toBottomOf="@id/jmlPesanan"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -126,7 +126,7 @@
             <ImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/frame_40"
+                android:src="@drawable/ic_plus"
                 android:layout_marginLeft="3dp"
                 app:layout_constraintEnd_toEndOf="@id/jmlPesanan"
                 app:layout_constraintStart_toEndOf="@id/jumlahpsn"

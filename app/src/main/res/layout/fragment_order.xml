@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/orderFragment"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".detail.OrderFragment">
+    tools:context=".fragment.OrderFragment">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_Order"

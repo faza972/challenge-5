@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".cart.CartFragment">
+    tools:context=".fragment.CartFragment">
     <androidx.cardview.widget.CardView
         android:id="@+id/cv_chart"
         android:layout_width="match_parent"
@@ -82,13 +82,4 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/list_cart">
     </androidx.recyclerview.widget.RecyclerView>
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        style="@style/Widget.Material3.BottomNavigationView"
-        app:menu="@menu/bott_navigation"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

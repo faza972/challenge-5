@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="40dp"
-    tools:context=".profil.RegisterActivity">
+    tools:context=".activity.RegisterActivity">
 
     <TextView
         android:id="@+id/tv_username"
@@ -106,7 +106,7 @@
         android:layout_marginTop="6dp"
         android:textSize="10dp"
         android:text="don't have an account? Register"
-        app:layout_constraintTop_toBottomOf="@id/btnLogin"
+        app:layout_constraintTop_toBottomOf="@id/btnReg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
