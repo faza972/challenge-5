@@ -40,4 +40,5 @@ class MainActivity : AppCompatActivity() {
     private fun hideBotNav(){
         binding.bottomNavigationView.visibility = View.GONE
     }
+
 }

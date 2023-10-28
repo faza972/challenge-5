@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.faza.challenge_4.R
 import com.faza.challenge_4.model.Menu
 
-class MenuAdapter(private val data : ArrayList<Menu>, var isGrid : Boolean = true, var onItemClick: ((Menu)-> Unit) ? = null) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
+class MenuAdapter(private val menu: ArrayList<Menu>, var isGrid: Boolean = true, var onItemClick: ((Menu)-> Unit) ? = null) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
     class ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
         val name: TextView = itemView.findViewById(R.id.tv_namaMenu)!!
         val image: ImageView = itemView.findViewById(R.id.iv_gambar)!!
@@ -24,30 +24,26 @@ class MenuAdapter(private val data : ArrayList<Menu>, var isGrid : Boolean = tru
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val (name, image, price, notes) = data[position]
+
+        val (name, image, price, notes) = menu[position]
         holder.image.setImageResource(image)
         holder.name.text = name
         holder.price.text = price.toString()
         holder.notes.text = notes
 
-        val currentItem = data[position]
+        val currentItem = menu[position]
         holder.itemView.setOnClickListener {
             onItemClick?. invoke(currentItem)
         }
     }
     override fun getItemCount(): Int {
-        return data.size
+        return menu.size
     }
     @SuppressLint("NotifyDataSetChanged")
     fun reloadData(newData: ArrayList<Menu>){
-        data.clear()
-        data.addAll(newData)
+        menu.clear()
+        menu.addAll(newData)
         notifyDataSetChanged()
-    }
-    fun initSelectedItem(data: ArrayList<Menu>) {
-        _selectedItem.value = item
-        _totalPrice.value = item.harga
-
     }
 }
 

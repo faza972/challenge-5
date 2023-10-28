@@ -9,7 +9,7 @@ import com.faza.challenge_4.model.Menu
 import com.faza.challenge_4.repository.CartRepo
 
 class DetailViewModel (context: Application) : AndroidViewModel(context){
-//    private var _menuCart: MutableLiveData<List<Menu>> = MutableLiveData(arrayListOf())
+    private var _menuCart: MutableLiveData<List<Menu>> = MutableLiveData(arrayListOf())
 //    val menuCart : LiveData<List<Menu>> get() = _menuCart
 
     val counter = MutableLiveData(1)
@@ -49,6 +49,11 @@ class DetailViewModel (context: Application) : AndroidViewModel(context){
             counter.value = currentValue - 1
             total()
         }
+    }
+    fun initSelectedItem(item: Menu) {
+       _menuCart.value = listOf(item)
+        _allPrice.value = item.price
+
     }
     fun addToCart(){
         val selectedItem = _select.value

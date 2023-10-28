@@ -254,13 +254,4 @@
         app:layout_constraintTop_toBottomOf="@id/cv_List"
         app:layout_constraintStart_toStartOf="parent"
         tools:listitem="@layout/item_menu_grid"/>
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        style="@style/Widget.Material3.BottomNavigationView"
-        app:menu="@menu/bott_navigation"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

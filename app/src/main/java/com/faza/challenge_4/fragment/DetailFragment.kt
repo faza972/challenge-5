@@ -84,17 +84,17 @@ class DetailFragment : Fragment() {
     }
 
     private fun showMenuData() {
-        menu = arguments?.getParcelable("menu")
+        val menu = arguments?.getParcelable<Menu>("key")
         menu?.let {
             Glide.with(binding.ivDetailImage)
-                .load(menu!!.image)
+                .load(menu.image)
                 .fitCenter()
                 .into(binding.ivDetailImage)
-            binding.tvDetailName.text = menu.name
-            binding.tvDetailPrice.text = menu.price
-            binding.tvDetaildesk.text = menu.desc
+            binding.tvDetailName.text = menu?.name
+            binding.tvDetailPrice.text = menu?.price.toString()
+            binding.tvDetaildesk.text = menu?.desc
 
-            viewModel.initSelectedItem(item!!)
+            viewModel.initSelectedItem(menu!!)
         }
     }
 

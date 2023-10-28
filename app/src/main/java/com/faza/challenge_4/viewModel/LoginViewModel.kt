@@ -8,7 +8,7 @@ import kotlinx.coroutines.Dispatchers
 import okhttp3.Dispatcher
 
 class LoginViewModel (private val apiService: ApiService): ViewModel() {
-    fun getAllCategory() = liveData(Dispatchers.IO) {
+    fun getLogin() = liveData(Dispatchers.IO) {
         try {
             emit(Resource.success(data = apiService.getCategory()))
         } catch (exception: Exception) {

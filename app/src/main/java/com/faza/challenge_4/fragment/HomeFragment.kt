@@ -1,6 +1,7 @@
 package com.faza.challenge_4.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,6 @@ import com.faza.challenge_4.SharedPreference
 import com.faza.challenge_4.R
 import com.faza.challenge_4.adapter.CategoryAdapter
 import com.faza.challenge_4.api.ApiClient
-import com.faza.challenge_4.data.MenuDataImpl
 import com.faza.challenge_4.databinding.FragmentHomeBinding
 import com.faza.challenge_4.model.CategoryMenu
 import com.faza.challenge_4.model.Menu
@@ -29,8 +29,8 @@ class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var preference: SharedPreference
     private lateinit var homeViewModel: HomeViewModel
-    private lateinit var menuDataImpl: MenuDataImpl
     private lateinit var menuAdapter: MenuAdapter
+    private lateinit var menu: Menu
     private var isGrid: Boolean = true
     private val data = ArrayList<Menu>()
     private var layoutMode = true
@@ -56,11 +56,12 @@ class HomeFragment : Fragment() {
         }
         showRecyclerView()
 
-        homeViewModel.menuView.observe(viewLifecycleOwner) {
-            toggleCurrent()
-        }
-        homeViewModel.menuItem.observe(viewLifecycleOwner) { menuItem ->
-            updateHome(menuItem)
+        val toggleButton = binding.ivGantiMode
+        toggleButton.setOnClickListener{
+            isGrid =! isGrid
+            toggleImageViewImage(toggleButton)
+            homeViewModel.menuView
+            fetchListMenu()
         }
         fetchCategoryMenu()
         fetchListMenu()
@@ -69,7 +70,23 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchListMenu() {
-        TODO("Not yet implemented")
+        ApiClient.instance.getCategory()
+            .enqueue(object : Callback<CategoryMenu>{
+                override fun onResponse(
+                    call: Call<CategoryMenu>,
+                    response: Response<CategoryMenu>
+                ) {
+                    val body : CategoryMenu? = response.body()
+                    if ( response.code() == 200) {
+                        showCategory(body!!)
+                    }
+
+                }
+
+                override fun onFailure(call: Call<CategoryMenu>, t: Throwable) {
+                    Log.e("CategoryMenu Error", t.message.toString())
+                }
+            })
     }
 
 
@@ -85,10 +102,8 @@ class HomeFragment : Fragment() {
         val toggleButton = binding.ivGantiMode
         toggleButton.setOnClickListener {
             isGrid = !isGrid
-            toggleCurrent()
             toggleImageViewImage(toggleButton)
         }
-        toggleCurrent()
     }
 
     private fun toggleImageViewImage(imageView: ImageView) {
@@ -101,42 +116,14 @@ class HomeFragment : Fragment() {
         binding.rvListMenu.adapter?.notifyDataSetChanged()
     }
 
-    private fun toggleCurrent() {
-        val toggleImage = binding.ivGantiMode
-        val currentLayout: Boolean = homeViewModel.menuView.value ?: preference.isGrid
-        toggleRecyclerView(currentLayout)
-    }
-
-    private fun toggleRecyclerView(viewList: Boolean) {
-        data.clear()
-
-        layoutMode = if (viewList) {
-            gridMenu()
-            true
-        } else {
-            linearMenu()
-            false
-        }
-        val adapter = MenuAdapter(data, isGrid = layoutMode) {
-            clickItem()
-        }
-        data.addAll(getMenu())
-        binding.rvListMenu.adapter = adapter
-    }
-
-    private fun clickItem() {
-        TODO("Not yet implemented")
-    }
-
     private fun getMenu(): List<Menu> {
-        val menuData = MenuDataImpl()
-        return menuData.getMenuData()
+        return emptyList()
     }
     private fun linearMenu() {
         binding.rvListMenu.layoutManager = LinearLayoutManager(requireActivity())
         val adapterFood = MenuAdapter(data, isGrid = false)
         binding.rvListMenu.adapter = adapterFood
-        navigateToDetail(menuDataImpl)
+        navigateToDetail(data)
     }
 
 
@@ -147,8 +134,8 @@ class HomeFragment : Fragment() {
         binding.rvListMenu.adapter = adapterGrid
     }
 
-    private fun navigateToDetail(dataImpl: MenuDataImpl) {
-        val bundle = bundleOf("key" to dataImpl)
+    private fun navigateToDetail(data: ArrayList<Menu>) {
+        val bundle = bundleOf("key" to data)
         findNavController().navigate(R.id.action_homeFragment_to_detailFragment)
     }
     private fun fetchCategoryMenu() {
