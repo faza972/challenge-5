@@ -2,8 +2,11 @@ package com.faza.challenge_4.model
 
 
 import com.google.gson.annotations.SerializedName
+import java.net.IDN
 
 data class ListData(
+    @SerializedName ("id")
+    val id: Int?,
     @SerializedName("alamat_resto")
     val alamatResto: String?,
     @SerializedName("detail")

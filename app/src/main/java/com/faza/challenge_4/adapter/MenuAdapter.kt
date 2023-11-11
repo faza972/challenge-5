@@ -1,49 +1,84 @@
 package com.faza.challenge_4.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.faza.challenge_4.R
-import com.faza.challenge_4.model.Menu
+import com.bumptech.glide.Glide
+import com.faza.challenge_4.databinding.ItemMenuGridBinding
+import com.faza.challenge_4.databinding.ItemMenuLinearBinding
+import com.faza.challenge_4.model.ListData
 
-class MenuAdapter(private val menu: ArrayList<Menu>, var isGrid: Boolean = true, var onItemClick: ((Menu)-> Unit) ? = null) : RecyclerView.Adapter<MenuAdapter.ViewHolder>() {
-    class ViewHolder (itemView: View): RecyclerView.ViewHolder(itemView){
-        val name: TextView = itemView.findViewById(R.id.tv_namaMenu)!!
-        val image: ImageView = itemView.findViewById(R.id.iv_gambar)!!
-        val price: TextView = itemView.findViewById(R.id.tv_harga)!!
-        val notes: TextView = itemView.findViewById(R.id.tv_notes)!!
-    }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val layoutRestId = if (isGrid) R.layout.item_menu_grid else R.layout.item_menu_linear
-        val view: View = LayoutInflater.from(parent.context).inflate(layoutRestId, parent, false)
-        return ViewHolder(view)
-    }
+class MenuAdapter(
+    var isGrid: Boolean = true,
+    private val onItemClick: OnClickListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private val differ = object : DiffUtil.ItemCallback<ListData>() {
+        override fun areContentsTheSame(oldItem: ListData, newItem: ListData): Boolean {
+            return oldItem == newItem
+        }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-        val (name, image, price, notes) = menu[position]
-        holder.image.setImageResource(image)
-        holder.name.text = name
-        holder.price.text = price.toString()
-        holder.notes.text = notes
-
-        val currentItem = menu[position]
-        holder.itemView.setOnClickListener {
-            onItemClick?. invoke(currentItem)
+        override fun areItemsTheSame(oldItem: ListData, newItem: ListData): Boolean {
+            return oldItem.id == newItem.id
         }
     }
-    override fun getItemCount(): Int {
-        return menu.size
+
+    private val dif = AsyncListDiffer(this, differ)
+
+    fun putListMenu(value: List<ListData?>?) = dif.submitList(value)
+    inner class GridVH(private var binding: ItemMenuGridBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: ListData) {
+            binding.apply {
+                tvNameGrid.text = data.nama
+                tvPriceGrid.text = data.hargaFormat
+                Glide.with(this.ivImageGrid)
+                    .load(data.imageUrl)
+                    .fitCenter()
+                    .into(ivImageGrid)
+                }
+            }
+        }
+    inner class ListVH(private var binding: ItemMenuLinearBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(data: ListData) {
+            binding.apply {
+                tvMenuName.text = data.nama
+                tvMenuPrice.text = data.hargaFormat
+                Glide.with(this.ivMenuImage)
+                    .load(data.imageUrl)
+                    .fitCenter()
+                    .into(ivMenuImage)
+            }
+
+
+        }
     }
-    @SuppressLint("NotifyDataSetChanged")
-    fun reloadData(newData: ArrayList<Menu>){
-        menu.clear()
-        menu.addAll(newData)
-        notifyDataSetChanged()
+
+    interface OnClickListener {
+        fun onClick(listData: ListData)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+        return if (isGrid){
+            GridVH(ItemMenuGridBinding.inflate(view, parent, false))
+        } else {
+            ListVH(ItemMenuLinearBinding.inflate(view,parent,false))
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val data = dif.currentList[position]
+        if (holder is GridVH) {
+            holder.bind(data)
+        } else if (holder is ListVH) {
+            holder.bind(data)
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return dif.currentList.size
     }
 }
 

@@ -8,24 +8,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.faza.challenge_4.api.ApiClient
 import com.faza.challenge_4.model.Cart
+import com.faza.challenge_4.model.CategoryMenu
 import com.faza.challenge_4.model.OrderReq
 import com.faza.challenge_4.model.OrderResponse
-import com.faza.challenge_4.repository.CartRepo
+import com.faza.challenge_4.repository.CartRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-
 class CartViewModel (application: Application) : ViewModel(){
-    private val repo: CartRepo = CartRepo(application)
+    private val repo: CartRepository = CartRepository(Application())
 
     val allOrder: LiveData<List<Cart>> = repo.getAllCartOrder()
     private val order = MutableLiveData<Boolean>()
+    val orderSucces: LiveData<Boolean> = order
 
-    fun deleteItem(idCart: Long?) {
-        if (idCart != null) {
-            repo.delete(idCart)
-        }
+    fun deleteCart(cartId: Int) {
+       repo.deleteCart(cartId)
+    }
+
+    fun deleteItem() {
+        repo.deleteItem()
     }
 
     private fun updateQuantity (cart: Cart) {
@@ -47,15 +50,16 @@ class CartViewModel (application: Application) : ViewModel(){
 
     fun postData(orderReq: OrderReq){
         ApiClient.instance.postOrder(orderReq)
-            .enqueue(object : Callback<OrderResponse>{
+            .enqueue(object : Callback<OrderResponse> {
                 override fun onResponse(
                     call: Call<OrderResponse>,
                     response: Response<OrderResponse>
                 ) {
+
                     if (response.isSuccessful){
                         order.postValue(true)
-                        deleteItem(idCart = null)
-                    }else {
+                        deleteItem()
+                    } else {
                         order.postValue(false)
                     }
                 }
@@ -63,6 +67,8 @@ class CartViewModel (application: Application) : ViewModel(){
                 override fun onFailure(call: Call<OrderResponse>, t: Throwable) {
                     Log.e("Error", "message= $t")
                 }
+
             })
     }
+
 }

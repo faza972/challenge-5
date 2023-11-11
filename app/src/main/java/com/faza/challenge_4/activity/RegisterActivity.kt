@@ -1,71 +1,69 @@
 package com.faza.challenge_4.activity
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import com.faza.challenge_4.databinding.ActivityRegisterBinding
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.faza.challenge_4.R
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : AppCompatActivity() {
-    private lateinit var binding : ActivityRegisterBinding
-    private lateinit var auth: FirebaseAuth
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityRegisterBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    lateinit var etEmail: EditText
+    private lateinit var etPass: EditText
+    private lateinit var btnSignUp: Button
+    lateinit var tvRedirectLogin: TextView
 
+    // create Firebase authentication object
+    private lateinit var auth: FirebaseAuth
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_register)
+
+        // View Bindings
+        etEmail = findViewById(R.id.et_email)
+        etPass = findViewById(R.id.et_password)
+        btnSignUp = findViewById(R.id.btnReg)
+        tvRedirectLogin = findViewById(R.id.backtlogin)
+
+        // Initialising auth object
         auth = Firebase.auth
 
-        binding.btnReg.setOnClickListener{
-            signUp(binding.etUsername.text.toString(), binding.etPassword.text.toString(), binding.etUsername.text.toString(), binding
-                .etPhoneNumber.text.toString())
+        btnSignUp.setOnClickListener {
+            signUpUser()
+        }
+
+        // switching from signUp Activity to Login Activity
+        tvRedirectLogin.setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
+    }
+
+    private fun signUpUser() {
+        val email = etEmail.text.toString()
+        val pass = etPass.text.toString()
+
+        // check pass
+        if (email.isBlank() || pass.isBlank()) {
+            Toast.makeText(this, "Email and Password can't be blank", Toast.LENGTH_SHORT).show()
+            return
+        }
+        auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this) {
+            if (it.isSuccessful) {
+                Toast.makeText(this, "Successfully Singed Up", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                Toast.makeText(this, "Singed Up Failed!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
-
-    private fun signUp(email: String, password: String, username: String, noTelp: String) {
-        auth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // User registration successful
-                    val user = auth.currentUser
-
-                    // Now, update the user's profile with additional information
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                        .setDisplayName(username) // Set the username
-                        .build()
-
-                    user?.updateProfile(profileUpdates)
-                        ?.addOnCompleteListener { profileUpdateTask ->
-                            if (profileUpdateTask.isSuccessful) {
-                                // Profile update successful, save phone number to database
-                                savePhoneNumberToDatabase(user.uid, noTelp)
-                            }
-                        }
-                } else {
-                    val exception = task.exception
-                    if (exception != null) {
-                        println("Error during user registration: ${exception.message}")
-                        // Handle the registration failure, e.g., show an error message to the user
-                    }
-                }
-            }
-    }
-
-    private fun savePhoneNumberToDatabase(userId: String, phoneNumber: String) {
-        // Initialize Firebase Realtime Database
-        val database = FirebaseDatabase.getInstance()
-        val usersRef: DatabaseReference = database.getReference("users")
-
-        // Create a child node for the user and save their phone number
-        val userRef = usersRef.child(userId)
-
-        // Assuming a structure like this: users -> userID -> phoneNumber
-        userRef.child("phoneNumber").setValue(phoneNumber)
-    }
-
 }

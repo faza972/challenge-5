@@ -1,17 +1,14 @@
 package com.faza.challenge_4.viewModel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import com.faza.challenge_4.api.ApiService
-import com.faza.challenge_4.util.Resource
-import kotlinx.coroutines.Dispatchers
+import com.faza.challenge_4.model.User
 
-class registerViewModel (private val apiService: ApiService): ViewModel() {
-    fun getRegister() = liveData(Dispatchers.IO) {
-        try {
-            emit(Resource.success(data = apiService.getCategory()))
-        } catch (exception: Exception) {
-            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
-        }
-    }
+class registerViewModel (private val repository: User): ViewModel() {
+
+    private val _registerResult = MutableLiveData <Boolean>()
+    val registerResult: LiveData<Boolean>
+        get() =_registerResult
+
 }

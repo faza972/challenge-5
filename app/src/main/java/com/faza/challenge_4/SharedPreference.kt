@@ -1,15 +1,26 @@
 package com.faza.challenge_4
 
 import android.content.Context
-import androidx.core.content.edit
+import android.content.SharedPreferences
 
-class SharedPreference(context: Context) {
-    private val sharedPreferenceName = "SharedPreferenceFoodShop"
-    private val preference = context.getSharedPreferences(sharedPreferenceName, 0)
+object SharedPreference {
+    private lateinit var preference: SharedPreferences
+    private const val sharedPreferenceName = "SharedPreferenceFoodShop"
 
-    var isGrid: Boolean
-        get() = preference.getBoolean("IS_GRID", false)
-        set(value) {
-            preference.edit().putBoolean("IS_GRID", value).apply()
+    fun initial (context: Context) {
+        preference = context.getSharedPreferences (sharedPreferenceName, Context.MODE_PRIVATE)
+    }
+
+    fun getPreference (key: String, value: Boolean) : Boolean {
+        return preference.getBoolean(key, value)
+    }
+
+    fun setPreference (key: String, value: Boolean) {
+        val editor: SharedPreferences.Editor = preference.edit()
+        with(editor) {
+            putBoolean(key, value)
+            apply()
+            commit()
         }
+    }
 }

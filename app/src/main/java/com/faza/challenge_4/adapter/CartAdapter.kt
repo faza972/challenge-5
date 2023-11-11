@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.faza.challenge_4.databinding.ListCartBinding
 import com.faza.challenge_4.model.Cart
 import com.faza.challenge_4.viewModel.CartViewModel
@@ -34,11 +35,14 @@ class CartAdapter(private val cartViewModel: CartViewModel, private val cartInc:
             binding.ivGambar.setImageResource(itemCart.imgid)
             binding.tvHarga.text = itemCart.foodPrice.toString()
             binding.tvCountChart.text = itemCart.quantity.toString()
+            Glide.with(this.binding.ivGambar)
+                .load(itemCart.imgid)
+                .fitCenter()
+                .into(binding.ivGambar)
 
-            // Menangani klik pada tombol 'Hapus'
-            binding.ivDelete.setOnClickListener {
-                viewModel.deleteItem(itemCart.id)
-            }
+                binding.ivDelete.setOnClickListener {
+                viewModel.deleteCart(itemCart.id)
+                }
 
             // Menangani klik pada tombol 'Kurang'
             binding.ivPlus.setOnClickListener {
